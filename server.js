@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/short-url.js');
+const validUrl = require('valid-url');
 const app = express();
 
 mongoose.connect('mongodb://localhost/urlShortener', {
@@ -18,7 +19,19 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/shortUrls', async (req, res) => {
-    await ShortUrl.create({full: req.body.fullUrl });
+    const { fullUrl } = req.body;
+    if (!validUrl.isUri( fullUrl )) {
+        return res.status(404).json('Invalid base URL!');
+    }
+
+    if (validUrl.isUri( fullUrl )) {
+        try {
+            await ShortUrl.create({full: fullUrl });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json('Server Error');
+        }
+    }
     res.redirect('/');
 });
 
