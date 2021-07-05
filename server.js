@@ -69,4 +69,18 @@ app.post("/api/v1/url", async (req, res, next) => {
     }
 });
 
+app.delete("/api/v1/url/:shortId", async (req, res, next) => {
+    try {
+        const { shortId } = req.params;
+        const urlData = await ShortUrl.findOneAndRemove({short: shortId});
+        res.status(410).json({
+            error: false,
+            data: urlData
+        });
+    }
+    catch(e) {
+        res.status(500).json({error: true, data: []});
+    }
+});
+
 app.listen(process.env.PORT || 5000);
