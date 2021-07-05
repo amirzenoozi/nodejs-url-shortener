@@ -16,24 +16,26 @@
         <button class="btn btn-success" type="submit">Shrink</button>
     </form>
 
-    <table class="table table-striped table-responsive">
-        <thead>
-        <tr>
-            <th>Full URL</th>
-            <th>Short URL</th>
-            <th>Clicks</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% shortUrlRecords.forEach(shortUrl => { %>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
-                <td><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
-                <td><%= shortUrl.clicks %></td>
+                <th>Full URL</th>
+                <th>Short URL</th>
+                <th>Clicks</th>
             </tr>
-        <% }) %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <% shortUrlRecords.forEach(shortUrl => { %>
+                <tr>
+                    <td><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
+                    <td><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
+                    <td><%= shortUrl.clicks %></td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
