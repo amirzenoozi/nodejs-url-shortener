@@ -11,6 +11,7 @@ mongoose.connect('mongodb://localhost/urlShortener', {
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
 
 app.get('/', async (req, res) => {
@@ -43,6 +44,22 @@ app.get('/:shortId', async (req, res) => {
     targetRecord.save();
 
     res.redirect(targetRecord.full);
+});
+
+app.get("/api/v1/get-urls", async (req, res, next) => {
+    const targetRecord = await ShortUrl.find();
+    res.json( targetRecord );
+});
+
+app.post("/api/v1/url", async (req, res, next) => {
+    try {
+        const {fullUrl} = req.body;
+        const urlData = await ShortUrl.create({full: fullUrl});
+        res.status(201).json({error: false, data: urlData});
+    }
+    catch(e) {
+        res.status(500).json({error: true, data: []});
+    }
 });
 
 app.listen(process.env.PORT || 5000);
