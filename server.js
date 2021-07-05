@@ -55,7 +55,14 @@ app.post("/api/v1/url", async (req, res, next) => {
     try {
         const {fullUrl} = req.body;
         const urlData = await ShortUrl.create({full: fullUrl});
-        res.status(201).json({error: false, data: urlData});
+        res.status(201).json({
+            error: false,
+            data: {
+                clicks: urlData['clicks'],
+                full: urlData['full'],
+                short: urlData['short'],
+            }
+        });
     }
     catch(e) {
         res.status(500).json({error: true, data: []});
